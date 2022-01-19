@@ -4,50 +4,16 @@ pipeline {
 //   }
     agent any
     stages {
-        stage('Python 3.7.0') {
-            steps {
-                script {
-                    withPythonenv() {
-                        sh "python --version"
-                    }
-                    withPyenv.purgeAll('pyenv')
+        stage('Test') {
+        agent {
+                docker {
+                    image 'python:2-alpine' 
                 }
             }
-        }
-        stage('Build') {
-            // agent {
-            //     docker {
-            //         image 'python:2-alpine' // (3)
-            //     }
-            // }
             steps {
-                withPythonEnv('python') {
-                    //sh 'python --version'
-                    //sh 'pip -V'
-                    sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                }
-                
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py' 
+                stash(name: 'compiled-results', includes: 'sources/*.py*') 
             }
-        }
-        // stage('Test') {
-        //     steps {
-        //         sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
-        //     }
-        //     post {
-        //         always {
-        //             junit 'test-reports/results.xml'
-        //         }
-        //     }
-        // }
-        // stage('Deliver') {
-        //     steps {
-        //         sh 'pyinstaller --onefile sources/add2vals.py'
-        //     }
-        //     post {
-        //         success {
-        //             archiveArtifacts 'dist/add2vals'
-        //         }
-        //     }
-        // }
+    }
     }
 }

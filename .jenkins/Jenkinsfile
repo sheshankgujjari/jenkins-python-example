@@ -7,7 +7,7 @@ pipeline {
         stage('Python 3.7.0') {
             steps {
                 script {
-                    withPyenv() {
+                    withPythonenv() {
                         sh "python --version"
                     }
                     withPyenv.purgeAll('pyenv')

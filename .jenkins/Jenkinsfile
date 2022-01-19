@@ -2,7 +2,7 @@ pipeline {
 //     agent {
 //     label 'docker' 
 //   }
-    agent none
+    agent any
     stages {
         stage('Build') {
             // agent {

@@ -4,6 +4,16 @@ pipeline {
 //   }
     agent any
     stages {
+        stage('Python 3.7.0') {
+            steps {
+                script {
+                    withPyenv() {
+                        sh "python --version"
+                    }
+                    withPyenv.purgeAll('pyenv')
+                }
+            }
+        }
         stage('Build') {
             // agent {
             //     docker {
